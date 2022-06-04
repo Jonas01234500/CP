@@ -137,3 +137,65 @@ struct Mo {
 };
 
 
+/**
+ * Standart Sum SegmentTree. Point updates in O(log n), range queries in O(log n).
+ */
+struct SegmentTree{
+    int n;
+    vector<int> tree, start;
+
+    SegmentTree(vector<int> start){
+        n = start.size();
+        this->start = start;
+        tree = vector<int>(4*n);
+        build(1, 0, n-1);
+    }
+
+private:
+    void build(int v, int tl, int tr){
+        if(tl==tr){
+            tree[v] = start[tl];
+        } else {
+            int tm = (tl+tr)/2;
+            build(v*2, tl, tm);
+            build(v*2+1, tm+1, tr);
+            tree[v] = tree[v*2] + tree[v*2+1];
+        }
+    }
+
+    void update(int v, int tl, int tr, int pos, int nev){
+        if(tl==tr){
+            tree[v] = nev;
+        } else {
+            int tm = (tl+tr)/2;
+            if(pos<=tm){
+                update(2*v, tl, tm, pos, nev);
+            } else {
+                update(2*v+1, tm+1, tr, pos, nev);
+            }
+            tree[v] = tree[v*2] + tree[v*2+1];
+        }
+    }
+
+    int sum(int v, int tl, int tr, int l,int r){
+        if(l>r){
+            return 0;
+        }
+        if(l==tl && r == tr){
+            return tree[v];
+        }
+        int tm = (tl+tr)/2;
+        return sum(2*v, tl, tm, l ,min(r, tm)) + sum(2*v+1, tm+1, tr, max(l, tm+1), r);
+    }
+
+public:
+    void update(int pos, int nev){
+        update(1, 0, n-1, pos, nev);
+    }
+
+    int sum(int l, int r){
+        return sum(1, 0, n-1, l, r);
+    }
+};
+
+
