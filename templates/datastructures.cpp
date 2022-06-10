@@ -198,4 +198,76 @@ public:
     }
 };
 
+/**
+ * Segment tree with lazy propagation. Range Update an Point Query in O(log n).
+ */
+struct LazyTree{
+    int n;
+    vector<int> tree, start;
+    vector<bool> marked;
+
+    LazyTree(vector<int> start){
+        n = start.size();
+        this->start = start;
+        tree = vector<int>(4*n);
+        marked = vector<bool>(4*n, false);
+        build(1, 0, n-1);
+    }
+
+private:
+    void build(int v, int tl, int tr){
+        if(tl==tr){
+            tree[v] = start[tl];
+        } else {
+            int tm = (tl+tr)/2;
+            build(v*2, tl, tm);
+            build(v*2+1, tm+1, tr);
+            tree[v] = tree[v*2] + tree[v*2+1];
+        }
+    }
+
+    void push(int v) {
+        if (marked[v]) {
+            tree[v*2] = tree[v*2+1] = tree[v];
+            marked[v*2] = marked[v*2+1] = true;
+            marked[v] = false;
+        }
+    }
+
+    void update(int v, int tl, int tr, int l, int r, int val) {
+        if (l > r)
+            return;
+        if (l == tl && tr == r) {
+            tree[v] = val;
+            marked[v] = true;
+        } else {
+            push(v);
+            int tm = (tl + tr) / 2;
+            update(v*2, tl, tm, l, min(r, tm), val);
+            update(v*2+1, tm+1, tr, max(l, tm+1), r, val);
+        }
+    }
+
+    int get(int v, int tl, int tr, int pos) {
+        if (tl == tr) {
+            return tree[v];
+        }
+        push(v);
+        int tm = (tl + tr) / 2;
+        if (pos <= tm)
+            return get(v*2, tl, tm, pos);
+        else
+            return get(v*2+1, tm+1, tr, pos);
+    }
+
+public:
+    void update(int l, int r, int val){
+        update(1, 0, n-1, l, r, val);
+    }
+
+    int get(int pos){
+        return get(1, 0, n-1, pos);
+    }
+};
+
 
