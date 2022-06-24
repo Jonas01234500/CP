@@ -81,7 +81,7 @@ void calcPrimes(int n){
     }
 }
 /**
- * Big Integer for posive numbers. Can't multiply. Don't substract larger numbers!. Everything works in O(length of number);
+ * Big Integer for posive numbers. Don't substract larger numbers!. Everything works in O(length of number) except multilplikation is O(n^log2(3);
  */
 struct BigInt {
     vector<int> number;
@@ -160,6 +160,56 @@ struct BigInt {
         }
         return res;
     }
+
+    BigInt operator*(BigInt o){
+        BigInt res;
+        if(number.size()==0 ||o.number.size()==0){
+            return res;
+        }
+        if(number.size()==1){
+            return o.multiply(number[0]);
+        }
+        if(o.number.size()==1){
+            return multiply(o.number[0]);
+        }
+        int m = min(number.size(), o.number.size())/2;
+        BigInt high1, high2, low1,low2;
+        for (int i = 0; i < number.size(); ++i) {
+            if(i<m){
+                low1.number.push_back(number[i]);
+            } else {
+                high1.number.push_back(number[i]);
+            }
+        }
+        for (int i = 0; i < o.number.size(); ++i) {
+            if(i<m){
+                low2.number.push_back(o.number[i]);
+            } else {
+                high2.number.push_back(o.number[i]);
+            }
+        }
+        BigInt z0, z1, z2;
+        z0 = low1*low2;
+        z1 = (low1+high1) * (low2+high2);
+        z2 = high1*high2;
+        BigInt v1,v2;
+        for (int i = 0; i < 2*m; ++i) {
+            v1.number.push_back(0);
+        }
+        for (int i = 0; i < z2.number.size(); ++i) {
+            v1.number.push_back(z2.number[i]);
+        }
+        for (int i = 0; i < m; ++i) {
+            v2.number.push_back(0);
+        }
+        BigInt tmp = z1-z2-z0;
+        for (int i = 0; i < tmp.number.size(); ++i) {
+            v2.number.push_back(tmp.number[i]);
+        }
+        return v1 + v2 + z0;
+
+    }
+
 
     bool operator<(BigInt o) {
         if (number.size() == o.number.size()) {
