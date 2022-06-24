@@ -17,9 +17,6 @@ using namespace std;
 
 int mo = 1020202009;
 
-struct sat {
-
-};
 
 void solve() {
 

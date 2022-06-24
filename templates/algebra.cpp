@@ -80,4 +80,140 @@ void calcPrimes(int n){
         }
     }
 }
+/**
+ * Big Integer for posive numbers. Can't multiply. Don't substract larger numbers!. Everything works in O(length of number);
+ */
+struct BigInt {
+    vector<int> number;
+    int base = 1e9;
 
+    string to_string() {
+        string s = number.empty() ? "0" : ::to_string(number.back());
+        for (int i = (int) number.size() - 2; i >= 0; --i) {
+            string ts = ::to_string(number[i]);
+            s += string(9 - ts.size(), '0');
+            s += ts;
+        }
+        return s;
+    }
+
+    BigInt(string s) {
+        for (int i = (int) s.length(); i > 0; i -= 9) {
+            if (i < 9)
+                number.push_back(atoi(s.substr(0, i).c_str()));
+            else
+                number.push_back(atoi(s.substr(i - 9, 9).c_str()));
+        }
+        while (number.size() > 0 && number.back() == 0) {
+            number.pop_back();
+        }
+    }
+
+    BigInt() {
+
+    }
+
+    BigInt operator+(BigInt o) {
+        BigInt res;
+        int carry = 0;
+        for (int i = 0; i < min(o.number.size(), number.size()); ++i) {
+            res.number.push_back(carry + number[i] + o.number[i]);
+            carry = res.number[i] / base;
+            res.number[i] %= base;
+        }
+        if (number.size() >= o.number.size()) {
+            for (int i = o.number.size(); i < number.size(); ++i) {
+                res.number.push_back(carry + number[i]);
+                carry = res.number[i] / base;
+                res.number[i] %= base;
+            }
+        } else {
+            for (int i = number.size(); i < o.number.size(); ++i) {
+                res.number.push_back(carry + o.number[i]);
+                carry = res.number[i] / base;
+                res.number[i] %= base;
+            }
+        }
+        if (carry > 0) {
+            res.number.push_back(carry);
+        }
+        while (res.number.size() > 0 && res.number.back() == 0) {
+            res.number.pop_back();
+        }
+        return res;
+    }
+
+    BigInt operator-(BigInt o) {
+        BigInt res;
+        int carry = 0;
+        for (int i = 0; i < o.number.size(); ++i) {
+            if (number[i] >= o.number[i] + carry) {
+                res.number.push_back(number[i] - o.number[i] - carry);
+                carry = 0;
+            } else {
+                res.number.push_back(base + number[i] - o.number[i] - carry);
+                carry = 1;
+            }
+        }
+        while (res.number.size() > 0 && res.number.back() == 0) {
+            res.number.pop_back();
+        }
+        return res;
+    }
+
+    bool operator<(BigInt o) {
+        if (number.size() == o.number.size()) {
+            for (int i = number.size() - 1; i >= 0; --i) {
+                if (number[i] != o.number[i]) {
+                    return number[i] < o.number[i];
+                }
+            }
+        }
+        return number.size() < o.number.size();
+    }
+
+    bool operator==(BigInt o) {
+        if (number.size() == o.number.size()) {
+            for (int i = number.size() - 1; i >= 0; --i) {
+                if (number[i] != o.number[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    bool operator>(BigInt o) {
+        return !(*this == o || *this < o);
+    }
+
+    BigInt multiply(int i) {
+        BigInt res;
+        int carry = 0;
+        for (int j = 0; j < number.size(); ++j) {
+            res.number.push_back(number[j] * i + carry);
+            carry = res.number[j] / base;
+            res.number[j] %= base;
+        }
+        if (carry > 0) {
+            res.number.push_back(carry);
+        }
+        return res;
+    }
+
+    BigInt divide(int i){
+        BigInt res;
+        res.number = vector<int>(number.size());
+        int carry = 0;
+        for (int j=(int)number.size()-1; j>=0; --j) {
+            int cur = number[j] + carry * base;
+            res.number[j] = (cur/i);
+            carry = cur%i;
+        }
+        while (res.number.size() > 0 && res.number.back() == 0) {
+            res.number.pop_back();
+        }
+        return res;
+    }
+};
