@@ -151,7 +151,6 @@ struct SegmentTree{
         build(1, 0, n-1);
     }
 
-private:
     void build(int v, int tl, int tr){
         if(tl==tr){
             tree[v] = start[tl];
@@ -188,14 +187,6 @@ private:
         return sum(2*v, tl, tm, l ,min(r, tm)) + sum(2*v+1, tm+1, tr, max(l, tm+1), r);
     }
 
-public:
-    void update(int pos, int nev){
-        update(1, 0, n-1, pos, nev);
-    }
-
-    int sum(int l, int r){
-        return sum(1, 0, n-1, l, r);
-    }
 };
 
 /**
@@ -214,7 +205,6 @@ struct LazyTree{
         build(1, 0, n-1);
     }
 
-private:
     void build(int v, int tl, int tr){
         if(tl==tr){
             tree[v] = start[tl];
@@ -260,14 +250,6 @@ private:
             return get(v*2+1, tm+1, tr, pos);
     }
 
-public:
-    void update(int l, int r, int val){
-        update(1, 0, n-1, l, r, val);
-    }
-
-    int get(int pos){
-        return get(1, 0, n-1, pos);
-    }
 };
 
 
