@@ -35,6 +35,16 @@ int modInverse(int a, int m){
 }
 
 /**
+ * Get random normal distributed number from a to b.
+ */
+std::random_device dev;
+std::mt19937 rng(dev());
+int ran(int a,int b){
+    uniform_int_distribution<std::mt19937::result_type> dist(a,b);
+    return dist(rng);
+}
+
+/**
  * Calculate discrete logarithm (a^x = b mod m).
  * Need binpow.
  * O(sqrt(m) * log m)
