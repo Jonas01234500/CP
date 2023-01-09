@@ -8,23 +8,15 @@ using namespace std;
  */
 struct UnionFind {
     vector<int> parent;
-    // initialize with size
     UnionFind(int n) {
         parent.resize(n);
-        for (int i = 0; i < n; ++i) {
-            parent[i] = i;
-        }
+        std::iota(parent.begin(), parent.end(), 0);
     }
-    // find parent
     int find(int u) {
-        if (parent[u] == u) {
-            return u;
-        }
-        parent[u] = find(parent[u]);
-        return parent[u];
+        if (parent[u] == u) return u;
+        return parent[u] = find(parent[u]);
     }
-    // union nodes
-    void unionf(int a, int b) {
+    void uniun(int a, int b) {
         a = find(a);
         b = find(b);
         parent[b] = a;

@@ -7,8 +7,6 @@ using namespace std;
 #define nl "\n"
 #define yes "YES\n"
 #define no "NO\n"
-#define read(v) for (int i = 0; i < v.size(); ++i) cin >> v[i];
-#define printv(v) for (int i = 0; i < v.size(); ++i) cout << v[i] << " "; cout << nl;
 #define fi first
 #define si second
 #define vi vector<int>
@@ -16,6 +14,11 @@ using namespace std;
 #define vii vector<ii>
 #define tsolve() int t; cin >> t;while(t--){solve();}
 #define printb(b) if(b){cout << "YES\n";}else {cout << "NO\n";}
+
+template<typename T> istream& operator>>(istream& in, vector<T>& a) {for(auto &x : a) in >> x; return in;}
+template<typename T> ostream& operator<<(ostream& out, vector<T>& a) {for(auto &x : a) out << x << ' '; return out;}
+template<typename T1, typename T2> istream& operator>>(istream& in, pair<T1, T2>& x) {return in >> x.fi >> x.si;}
+template<typename T1, typename T2> ostream& operator<<(ostream& out, const pair<T1, T2>& x) {return out << x.fi << ' ' << x.si;}
 
 int mo = 1000000007;
 
