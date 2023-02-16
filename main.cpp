@@ -2,7 +2,6 @@
 
 using namespace std;
 #define int long long
-#define double long double
 #define ii pair<int, int>
 #define nl "\n"
 #define yes "YES\n"
@@ -21,6 +20,7 @@ template<typename T1, typename T2> istream& operator>>(istream& in, pair<T1, T2>
 template<typename T1, typename T2> ostream& operator<<(ostream& out, const pair<T1, T2>& x) {return out << x.fi << ' ' << x.si;}
 
 int mo = 1000000007;
+int inf = 1e18;
 
 
 void solve() {

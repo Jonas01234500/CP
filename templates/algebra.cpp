@@ -24,14 +24,13 @@ int binpow(int a, int b, int m) {
 
 /**
  * Calculate modular inverse.
- * Need binpow.
  * O(log m)
  * @param a the number
  * @param m the modulo
  * @return the inverse of a
  */
-int modInverse(int a, int m){
-    return binpow(a, m-2, m);
+int inv(int a, int b){
+    return 1<a ? b - inv(b%a,a)*b/a : 1;
 }
 
 /**
