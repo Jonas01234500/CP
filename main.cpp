@@ -12,7 +12,6 @@ using namespace std;
 #define vvi vector<vector<int>>
 #define vii vector<ii>
 #define tsolve() int t; cin >> t;while(t--){solve();}
-#define printb(b) if(b){cout << "YES\n";}else {cout << "NO\n";}
 
 template<typename T> istream& operator>>(istream& in, vector<T>& a) {for(auto &x : a) in >> x; return in;}
 template<typename T> ostream& operator<<(ostream& out, vector<T>& a) {for(auto &x : a) out << x << ' '; return out;}
